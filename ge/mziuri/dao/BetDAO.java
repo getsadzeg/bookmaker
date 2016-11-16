@@ -2,6 +2,6 @@
 package ge.mziuri.dao;
 
 
-public class BetDAO {
+public interface BetDAO {
     
 }
