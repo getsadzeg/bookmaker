@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class Book {
     private ArrayList bets = new ArrayList<Bet>();
+    private int money;
 
     /**
      * @return the bets
@@ -14,16 +15,20 @@ public class Book {
         return bets;
     }
 
-    /**
-     * @param bets the bets to set
-     */
-    public void setBets(ArrayList bets) {
-        this.bets = bets;
+    public Book() {
     }
 
-    @Override
-    public String toString() {
-        return "Book{" + "bets=" + bets + '}';
+    public Book(int money) {
+        this.money = money;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
     
+
 }
