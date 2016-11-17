@@ -22,6 +22,11 @@ public class Bet {
         this.coefficient = coefficient;
     }
 
+    @Override
+    public String toString() {
+        return "Bet{" + "coefficient=" + coefficient + ", chosenteam=" + chosenteam + '}';
+    }
+    
     
     
 }

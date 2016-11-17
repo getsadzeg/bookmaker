@@ -20,5 +20,10 @@ public class Book {
     public void setBets(ArrayList bets) {
         this.bets = bets;
     }
+
+    @Override
+    public String toString() {
+        return "Book{" + "bets=" + bets + '}';
+    }
     
 }

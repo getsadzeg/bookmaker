@@ -89,5 +89,10 @@ public class Game {
     public void setCoefficient2(double coefficient2) {
         this.coefficient2 = coefficient2;
     }
+
+    @Override
+    public String toString() {
+        return "Game{" + "date=" + date + ", team1=" + team1 + ", team2=" + team2 + ", coefficient1=" + coefficient1 + ", coefficient2=" + coefficient2 + '}';
+    }
     
 }
