@@ -4,6 +4,7 @@ package ge.mziuri.model;
 import java.util.Date;
 
 public class Game {
+    private int id;
     private Date date;
     private String team1;
     private String team2;
@@ -12,7 +13,8 @@ public class Game {
     public Game() {
         
     }
-    public Game(Date date, String team1, String team2, double coefficient1, double coefficient2) {
+    public Game(int id, Date date, String team1, String team2, double coefficient1, double coefficient2) {
+        this.id = id;
         this.date = date;
         this.team1 = team1;
         this.team2 = team2;
@@ -20,6 +22,13 @@ public class Game {
         this.coefficient2 = coefficient2;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     /**
      * @return the date
      */
