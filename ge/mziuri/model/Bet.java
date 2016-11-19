@@ -3,28 +3,48 @@ package ge.mziuri.model;
 
 
 public class Bet {
-    private double coefficient;
+    private Game game;
 
-    private final String chosenteam;
+    private String chosenteam;
     
-    public Bet(String chosenteam) {
+    public Bet(String chosenteam, Game game) {
         this.chosenteam = chosenteam;
+        this.game = game;
     }
-    /**
-     * @return the coefficient1
-     */
-    public double getCoefficient() {
-        return coefficient;
-    }
-
     
-    public void setCoefficient1(double coefficient) {
-        this.coefficient = coefficient;
-    }
+    
 
     @Override
     public String toString() {
-        return "Bet{" + "coefficient=" + coefficient + ", chosenteam=" + chosenteam + '}';
+        return "Bet{" + "game=" + game.toString() + ", chosenteam=" + getChosenteam() + '}';
+    }
+
+    /**
+     * @return the game
+     */
+    public Game getGame() {
+        return game;
+    }
+
+    /**
+     * @param game the game to set
+     */
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    /**
+     * @return the chosenteam
+     */
+    public String getChosenteam() {
+        return chosenteam;
+    }
+
+    /**
+     * @param chosenteam the chosenteam to set
+     */
+    public void setChosenteam(String chosenteam) {
+        this.chosenteam = chosenteam;
     }
     
     
