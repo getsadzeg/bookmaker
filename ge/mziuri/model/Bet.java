@@ -1,22 +1,41 @@
 
 package ge.mziuri.model;
 
+import ge.mziuri.enums.RESULT;
+import static ge.mziuri.enums.RESULT.NO_DATA;
+
 
 public class Bet {
+    private int id;
+    
+    private int book_id;
+    
     private Game game;
 
     private String chosenteam;
     
-    public Bet(String chosenteam, Game game) {
+    private RESULT result;
+    
+    public Bet(int id, String chosenteam, Game game) {
+        this.id = id;
         this.chosenteam = chosenteam;
         this.game = game;
+        result = NO_DATA;
+    }
+    
+    public Bet(int id, String chosenteam, Game game, RESULT result) {
+        this.id = id;
+        this.chosenteam = chosenteam;
+        this.game = game;
+        this.result = result;
     }
     
     
 
     @Override
     public String toString() {
-        return "Bet{" + "game=" + game.toString() + ", chosenteam=" + getChosenteam() + '}';
+        return "Bet{" + "id=" + getId() + ", book_id=" + getBook_id() + ", game=" + game.toString() + ", chosenteam=" + getChosenteam()
+                + ", result=" + getResult() +  '}';
     }
 
     /**
@@ -45,6 +64,30 @@ public class Bet {
      */
     public void setChosenteam(String chosenteam) {
         this.chosenteam = chosenteam;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public RESULT getResult() {
+        return result;
+    }
+
+    public void setResult(RESULT result) {
+        this.result = result;
+    }
+
+    public int getBook_id() {
+        return book_id;
+    }
+
+    public void setBook_id(int book_id) {
+        this.book_id = book_id;
     }
     
     
