@@ -8,6 +8,6 @@ import ge.mziuri.model.Book;
 public interface BookDAO {
     void createBook(Book book);
     void deleteBook(int bookID);
-    boolean isWinner();
+    boolean isWinner(int bookID);
 }
    
