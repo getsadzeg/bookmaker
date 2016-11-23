@@ -1,30 +1,93 @@
 
 package ge.mziuri.model;
 
+import ge.mziuri.enums.RESULT;
+import static ge.mziuri.enums.RESULT.NO_DATA;
+
 
 public class Bet {
-    private double coefficient;
-
-    private final String chosenteam;
+    private int id;
     
-    public Bet(String chosenteam) {
+    private int book_id;
+    
+    private Game game;
+
+    private String chosenteam;
+    
+    private RESULT result;
+    
+    public Bet(int id, String chosenteam, Game game) {
+        this.id = id;
         this.chosenteam = chosenteam;
+        this.game = game;
+        result = NO_DATA;
     }
-    /**
-     * @return the coefficient1
-     */
-    public double getCoefficient() {
-        return coefficient;
-    }
-
     
-    public void setCoefficient1(double coefficient) {
-        this.coefficient = coefficient;
+    public Bet(int id, String chosenteam, Game game, RESULT result) {
+        this.id = id;
+        this.chosenteam = chosenteam;
+        this.game = game;
+        this.result = result;
     }
+    
+    
 
     @Override
     public String toString() {
-        return "Bet{" + "coefficient=" + coefficient + ", chosenteam=" + chosenteam + '}';
+        return "Bet{" + "id=" + getId() + ", book_id=" + getBook_id() + ", game=" + game.toString() + ", chosenteam=" + getChosenteam()
+                + ", result=" + getResult() +  '}';
+    }
+
+    /**
+     * @return the game
+     */
+    public Game getGame() {
+        return game;
+    }
+
+    /**
+     * @param game the game to set
+     */
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    /**
+     * @return the chosenteam
+     */
+    public String getChosenteam() {
+        return chosenteam;
+    }
+
+    /**
+     * @param chosenteam the chosenteam to set
+     */
+    public void setChosenteam(String chosenteam) {
+        this.chosenteam = chosenteam;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public RESULT getResult() {
+        return result;
+    }
+
+    public void setResult(RESULT result) {
+        this.result = result;
+    }
+
+    public int getBook_id() {
+        return book_id;
+    }
+
+    public void setBook_id(int book_id) {
+        this.book_id = book_id;
     }
     
     
