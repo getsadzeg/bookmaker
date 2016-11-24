@@ -31,7 +31,7 @@ public class GameDAOImpl implements GameDAO {
     public void addGame(Game game) {
         try {
             pstmt = con.prepareStatement("INSERT INTO game(id, gamedate, team_1, team_2, coefficient_1, coefficient_2)"
-                + "VALUES(?, ?, ?, ?, ?, ?");
+                + "VALUES(?, ?, ?, ?, ?, ?)");
             pstmt.setInt(1, game.getId());
             pstmt.setDate(2, new java.sql.Date(game.getDate().getTime())); //needs to fix
             pstmt.setString(3, game.getTeam1());
