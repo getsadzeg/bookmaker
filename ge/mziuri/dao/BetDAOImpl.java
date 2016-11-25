@@ -30,7 +30,7 @@ public class BetDAOImpl implements BetDAO {
     public void addBet(Bet bet) {
         try {
             pstmt = con.prepareStatement("INSERT INTO bet (id, game_id, book_id, result, chosen_team) VALUES ("
-                + "?, ?, ?, ?)");
+                + "?, ?, ?, ?, ?)");
             pstmt.setInt(1, bet.getId());
             pstmt.setInt(2, bet.getGame().getId());
             pstmt.setInt(3, bet.getBook_id());
