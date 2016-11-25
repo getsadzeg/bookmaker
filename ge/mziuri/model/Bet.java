@@ -16,14 +16,14 @@ public class Bet {
     
     private RESULT result;
     
-    public Bet(int id, String chosenteam, Game game) {
+    public Bet(int id, int book_id, String chosenteam, Game game) {
         this.id = id;
         this.chosenteam = chosenteam;
         this.game = game;
         result = NO_DATA;
     }
     
-    public Bet(int id, String chosenteam, Game game, RESULT result) {
+    public Bet(int id, int book_id, String chosenteam, Game game, RESULT result) {
         this.id = id;
         this.chosenteam = chosenteam;
         this.game = game;
