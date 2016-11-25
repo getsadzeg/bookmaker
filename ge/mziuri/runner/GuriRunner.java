@@ -30,8 +30,10 @@ public class GuriRunner {
         BetDAO betdao = new BetDAOImpl();
         GameDAO gamedao = new GameDAOImpl();
         BookDAO bookdao = new BookDAOImpl();
-        bookdao.createBook(book);
-        betdao.addBet(bet);
+        //bookdao.createBook(book);
+       // betdao.addBet(bet);
+        betdao.deleteBet(1);
+        bookdao.deleteBook(1);
        // betdao.getResult(1);
         //betdao.deleteBet(1);
         //gamedao.addGame(game);
