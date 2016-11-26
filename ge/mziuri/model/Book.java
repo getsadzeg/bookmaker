@@ -8,6 +8,8 @@ public class Book {
     
     private int id;
     
+    private int user_id;
+    
     private ArrayList bets = new ArrayList<Bet>();
     
     private double money;
@@ -16,7 +18,9 @@ public class Book {
         
     }
     
-    public Book(ArrayList bets, double money) {
+    public Book(int user_id, int id, ArrayList bets, double money) {
+        this.user_id = user_id;
+        this.id = id;
         this.bets = bets;
         this.money = money;
     }
