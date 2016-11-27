@@ -101,13 +101,14 @@ public class BookDAOImpl implements BookDAO {
     @Override
     public String getBookInfo(Book book) {
         ArrayList<Book> books = new ArrayList<>();
+        StringBuilder bookinfo = null;
         try {
             pstmt = con.prepareStatement("SELECT bet.chosenteam, bet.result, game.team_1, game.team_2, game.gamedate"
                     + " FROM bet INNER JOIN game ON bet.game_id = game.id WHERE bet.book_id = ?");
             pstmt.setInt(1, book.getId());
             ResultSet rs = pstmt.executeQuery();
             int num = 1;
-            StringBuilder bookinfo = new StringBuilder("book_id: " + book.getId() + "money: " + book.getMoney());
+            bookinfo = new StringBuilder("book_id: " + book.getId() + "money: " + book.getMoney());
             while(rs.next()) {
                 String team_1 = rs.getString("game.team_1");
                 String team_2 = rs.getString("game.team_2");
@@ -120,12 +121,13 @@ public class BookDAOImpl implements BookDAO {
                 bookinfo.append(num + "team_1: " + team_1 + " team_2: " + team_2 +  "game date: " 
                         + date.toString() + "chosen team" + chosenteam + "result: " + result);
             }
-            //if book is winner or not 
+            //if book is winner or not
+            bookinfo.append("winner: " + isWinner(book.getId()));
                 }
         catch(SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        //and cast StringBuilder to String
+        return new String(bookinfo);
     }
     
 }
