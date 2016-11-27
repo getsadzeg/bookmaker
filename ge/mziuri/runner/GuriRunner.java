@@ -21,23 +21,26 @@ public class GuriRunner {
     public static void main(String[] args) {
         Game game = new Game(1, new Date(), "Barcelona", "Manchester UTD", 1.7, 2.8);
         Game game1 = new Game(2, new Date(), "Real Madrid", "Arsenal", 1.5, 3);
+        
         Bet bet = new Bet(1, 1, "Barcelona", game, RESULT.WON);
         Bet bet1 = new Bet(2, 1, "Arsenal", game1, RESULT.LOST);
         ArrayList bets = new ArrayList<>();
+        Book book = new Book(1, 1, bets, 50);
         bets.add(bet);
         bets.add(bet1);
-        Book book = new Book(bets, 50);
+        
         BetDAO betdao = new BetDAOImpl();
         GameDAO gamedao = new GameDAOImpl();
         BookDAO bookdao = new BookDAOImpl();
-        //bookdao.createBook(book);
-       // betdao.addBet(bet);
-        betdao.deleteBet(1);
-        bookdao.deleteBook(1);
+       // gamedao.addGame(game);
+       // gamedao.addGame(game1);
+        
+       // bookdao.createBook(book);
+        betdao.addBet(bet);
+        betdao.addBet(bet1);
        // betdao.getResult(1);
-        //betdao.deleteBet(1);
-        //gamedao.addGame(game);
-        //gamedao.addGame(game1);
+       // betdao.deleteBet(1);
+        
         
         
         /* try {
