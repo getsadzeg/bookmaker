@@ -31,7 +31,7 @@ public class GameDAOImpl implements GameDAO {
     public void addGame(Game game) {
         try {
             pstmt = con.prepareStatement("INSERT INTO game(id, gamedate, team_1, team_2, coefficient_1, coefficient_2)"
-                + "VALUES(?, ?, ?, ?, ?, ?");
+                + "VALUES(?, ?, ?, ?, ?, ?)");
             pstmt.setInt(1, game.getId());
             pstmt.setDate(2, new java.sql.Date(game.getDate().getTime())); //needs to fix
             pstmt.setString(3, game.getTeam1());
@@ -62,7 +62,7 @@ public class GameDAOImpl implements GameDAO {
     public void editGame(int oldgameID, Game game) {
         try {
             pstmt = con.prepareStatement("UPDATE TABLE SET id = ?, gamedate = ?, team_1 = ?, team_2 = ?, coefficient_1 = ?, coefficient_2 = ?"
-                    + "WHERE id = ?");
+                    + " WHERE id = ?");
             pstmt.setInt(1, game.getId());
             pstmt.setTimestamp(2, new java.sql.Timestamp(game.getDate().getTime()));
             pstmt.setString(3, game.getTeam1());
@@ -121,7 +121,7 @@ public class GameDAOImpl implements GameDAO {
         double coefficient = 0;
         try {
             pstmt = con.prepareStatement("SELECT team_1, team_2, coefficient_1, coefficient_2 FROM game"
-                + "WHERE id = ?");
+                + " WHERE id = ?");
             pstmt.setInt(1, game.getId());
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
