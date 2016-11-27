@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class BookDAOImpl implements BookDAO {
@@ -70,6 +71,61 @@ public class BookDAOImpl implements BookDAO {
             System.out.println(ex.getMessage());
         }
         return !results.isEmpty();
+    }
+    
+    @Override
+    public ArrayList myBooks(int user_id) {
+        ArrayList<Book> list = new ArrayList();
+        try {
+            pstmt = con.prepareStatement("SELECT id, money FROM book WHERE user_id = ?");
+            pstmt.setInt(1, user_id);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                int id = rs.getInt("id");
+                int money = rs.getInt("money");
+                Book book = new Book();
+                book.setId(id);
+                book.setMoney(money);
+                list.add(book);
+            }
+        }
+        catch(SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return list;
+    }
+    
+    
+    
+    
+    @Override
+    public String getBookInfo(Book book) {
+        ArrayList<Book> books = new ArrayList<>();
+        try {
+            pstmt = con.prepareStatement("SELECT bet.chosenteam, bet.result, game.team_1, game.team_2, game.gamedate"
+                    + " FROM bet INNER JOIN game ON bet.game_id = game.id WHERE bet.book_id = ?");
+            pstmt.setInt(1, book.getId());
+            ResultSet rs = pstmt.executeQuery();
+            int num = 1;
+            StringBuilder bookinfo = new StringBuilder("book_id: " + book.getId() + "money: " + book.getMoney());
+            while(rs.next()) {
+                String team_1 = rs.getString("game.team_1");
+                String team_2 = rs.getString("game.team_2");
+                Date date = rs.getDate("game.gamedate");
+               
+               // int id = rs.getInt("id");
+                String chosenteam = rs.getString("bet.chosen_team");
+                String stringres = rs.getString("bet.result");
+                RESULT result = RESULT.valueOf(stringres);
+                bookinfo.append(num + "team_1: " + team_1 + " team_2: " + team_2 +  "game date: " 
+                        + date.toString() + "chosen team" + chosenteam + "result: " + result);
+            }
+            //if book is winner or not 
+                }
+        catch(SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        //and cast StringBuilder to String
     }
     
 }
