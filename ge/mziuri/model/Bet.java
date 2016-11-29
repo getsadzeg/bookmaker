@@ -18,6 +18,7 @@ public class Bet {
     
     public Bet(int id, int book_id, String chosenteam, Game game) {
         this.id = id;
+        this.book_id = book_id;
         this.chosenteam = chosenteam;
         this.game = game;
         result = NO_DATA;
@@ -25,6 +26,7 @@ public class Bet {
     
     public Bet(int id, int book_id, String chosenteam, Game game, RESULT result) {
         this.id = id;
+        this.book_id = book_id;
         this.chosenteam = chosenteam;
         this.game = game;
         this.result = result;
