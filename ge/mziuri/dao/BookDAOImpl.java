@@ -30,10 +30,11 @@ public class BookDAOImpl implements BookDAO {
     @Override
     public void createBook(Book book) {
         try {
-            pstmt = con.prepareStatement("INSERT into book (id, money) VALUES("
-                    + "?, ?)");
+            pstmt = con.prepareStatement("INSERT into book (id, money, user_id) VALUES("
+                    + "?, ?, ?)");
             pstmt.setInt(1, book.getId());
             pstmt.setDouble(2, book.getMoney());
+            pstmt.setInt(3, book.getUser_id());
             pstmt.executeUpdate();
         }
         catch(SQLException ex) {
@@ -74,25 +75,22 @@ public class BookDAOImpl implements BookDAO {
     }
     
     @Override
-    public ArrayList myBooks(int user_id) {
-        ArrayList<Book> list = new ArrayList();
+    public String myBooks(int user_id) {
+        StringBuilder info = new StringBuilder();
         try {
             pstmt = con.prepareStatement("SELECT id, money FROM book WHERE user_id = ?");
             pstmt.setInt(1, user_id);
             ResultSet rs = pstmt.executeQuery();
-            if(rs.next()) {
+            while(rs.next()) {
                 int id = rs.getInt("id");
                 int money = rs.getInt("money");
-                Book book = new Book();
-                book.setId(id);
-                book.setMoney(money);
-                list.add(book);
+                info.append("id: " + id + " money: " + money + System.lineSeparator());
             }
         }
         catch(SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        return list;
+        return info.toString();
     }
     
     
@@ -101,33 +99,33 @@ public class BookDAOImpl implements BookDAO {
     @Override
     public String getBookInfo(Book book) {
         ArrayList<Book> books = new ArrayList<>();
-        StringBuilder bookinfo = null;
+        StringBuilder bookinfo = new StringBuilder();
         try {
-            pstmt = con.prepareStatement("SELECT bet.chosenteam, bet.result, game.team_1, game.team_2, game.gamedate"
+            pstmt = con.prepareStatement("SELECT bet.chosen_team, bet.result, game.team_1, game.team_2, game.gamedate"
                     + " FROM bet INNER JOIN game ON bet.game_id = game.id WHERE bet.book_id = ?");
             pstmt.setInt(1, book.getId());
             ResultSet rs = pstmt.executeQuery();
             int num = 1;
-            bookinfo = new StringBuilder("book_id: " + book.getId() + "money: " + book.getMoney());
+            bookinfo = new StringBuilder(num + ".  book_id: " + book.getId() + ", money: " + book.getMoney());
             while(rs.next()) {
-                String team_1 = rs.getString("game.team_1");
-                String team_2 = rs.getString("game.team_2");
-                Date date = rs.getDate("game.gamedate");
-               
-               // int id = rs.getInt("id");
-                String chosenteam = rs.getString("bet.chosen_team");
-                String stringres = rs.getString("bet.result");
+                String team_1 = rs.getString("team_1");
+                String team_2 = rs.getString("team_2");
+                Date date = rs.getDate("gamedate");
+                String chosenteam = rs.getString("chosen_team");
+                String stringres = rs.getString("result");
                 RESULT result = RESULT.valueOf(stringres);
-                bookinfo.append(num + "team_1: " + team_1 + " team_2: " + team_2 +  "game date: " 
-                        + date.toString() + "chosen team" + chosenteam + "result: " + result);
+                bookinfo.append(", team_1: " + team_1 + ", team_2: " + team_2 +  ", game date: " 
+                        + date.toString() + ", chosen team: " + chosenteam + ", result: " + result);
+                bookinfo.append(", winner: " + isWinner(book.getId()) + System.lineSeparator());
+                num++;
             }
             //if book is winner or not
-            bookinfo.append("winner: " + isWinner(book.getId()));
+            
                 }
         catch(SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        return new String(bookinfo);
+        return bookinfo.toString();
     }
     
 }

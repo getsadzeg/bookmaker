@@ -10,7 +10,7 @@ public interface BookDAO {
     void createBook(Book book);
     void deleteBook(int bookID);
     boolean isWinner(int bookID);
-    ArrayList<Book> myBooks(int user_id);
+    String myBooks(int user_id);
     String getBookInfo(Book book);
 }
    
