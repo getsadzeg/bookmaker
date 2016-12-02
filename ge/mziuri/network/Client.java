@@ -3,6 +3,8 @@ package ge.mziuri.network;
 
 import ge.mziuri.dao.GameDAO;
 import ge.mziuri.dao.GameDAOImpl;
+import ge.mziuri.exception.IncorrectGameException;
+import ge.mziuri.exception.NoSuchTeamException;
 import ge.mziuri.model.Game;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -36,11 +38,34 @@ public class Client {
                 public void run() {
                     try {
                         while (true) {
+                            GameDAOImpl gamedao = new GameDAOImpl();
                             obj = (Object[]) in.readObject();
-                            for(int i=0; i<obj.length; i++) {
-                                if(obj[0] == "game 1") new GameDAOImpl().addGame((Game)obj[1]);
+                            switch((String)obj[0]) {
+                                case "game 1": 
+                                    gamedao.addGame((Game)obj[1]);
+                                    break;
+                                case "game 2":
+                                    gamedao.deleteGame((Integer)obj[1]);
+                                    break;
+                                case "game 3":
+                                    gamedao.editGame(Integer.parseInt((String)obj[1]), (Game)obj[2]);
+                                case "game 4":
+                                    System.out.println(gamedao.aboutGames());
+                                    break;
+                                case "game 5":
+                                    System.out.println(gamedao.getDate((Integer)obj[1]));
+                                    break;
+                                case "game 6":
+                                    try {
+                                        System.out.println(gamedao.getCoefficient((String)obj[1], (Game)obj[2]));
+                                    }
+                                    catch(IncorrectGameException | NoSuchTeamException ex) {
+                                        System.out.println(ex.getMessage());
+                                    }
+                                break;
+                                    
+                                    
                             }
-                            
                         }
                     } catch(IOException | ClassNotFoundException ex) {
                         System.out.println(ex.getMessage());
@@ -54,17 +79,39 @@ public class Client {
                                     + System.lineSeparator() + "2 - delete game"
                                     + System.lineSeparator() + "3 - edit game"
                                     + System.lineSeparator() + "4 - about games"
-                                    + System.lineSeparator() + "5 - get coefficient");
+                                    + System.lineSeparator() + "5 - get date"
+                                    + System.lineSeparator() + "6 - get coefficient");
                 String text = scanner.nextLine();
                 if(text.contains("game 1")) {
                     out.writeObject("game 1");
-                    out.writeObject(makeGameObject(text));
+                    out.writeObject(processGame(text));
+                }
+                else if(text.contains("game 2")) {
+                    out.writeObject("game 2");
+                    out.writeObject(getID(text));
+                    out.writeObject(processGame(text));
+                }
+                else if(text.contains("game 3")) {
+                    out.writeObject("game 3");
+                    out.writeObject(getAdditionalParam(text)); // oldGameID
+                    out.writeObject(processGame(text)); //game obj
+                }
+                else if(text.contains("game 4")) {
+                    out.writeObject("game 4");
+                }
+                
+                else if(text.contains("game 5")) {
+                    out.writeObject("game 5");
+                    out.writeObject(getID(text));
+                }
+                else if(text.contains("game 6")) {
+                    out.writeObject("game 6");
+                    out.writeObject(getAdditionalParam(text)); //team
+                    out.writeObject(processGame(text)); //game obj
                 }
                 
                 
-                
-                //out.writeUTF(text);
-                if (text.equals("exit")) { 
+                else if (text.equals("exit")) { 
                     break;
                 }
             }
@@ -82,22 +129,33 @@ public class Client {
         
     }
     
-    public static Game makeGameObject(String args) {
+    public static Object processGame(String args) {
                     String[] splitted = args.split("\\s+");
-                    Integer id = Integer.parseInt(splitted[3]);
+                    Integer id = Integer.parseInt(splitted[2]);
                     DateFormat formatter; 
                     Date date = null;
                     formatter = new SimpleDateFormat("dd-MMM-yy");
                      try {
-                         date = formatter.parse(splitted[4]);
+                         date = formatter.parse(splitted[3]);
                      } 
                      catch(ParseException ex) {
                          System.out.println(ex.getMessage());
                      }
-                     String team1 = splitted[5];
-                     String team2 = splitted[6];
-                     Integer coefficient1 = Integer.parseInt(splitted[7]);
-                     Integer coefficient2 = Integer.parseInt(splitted[8]);
+                     String team1 = splitted[4];
+                     String team2 = splitted[5];
+                     Integer coefficient1 = Integer.parseInt(splitted[6]);
+                     Integer coefficient2 = Integer.parseInt(splitted[7]);
+                     
                      return new Game(id.intValue(), date, team1, team2, coefficient1.doubleValue(), coefficient2.doubleValue());
+    }
+    
+    public static int getID(String args) {
+        String[] splitted = args.split("\\s+");
+        return Integer.parseInt(splitted[2]);
+    }
+    
+    public static String getAdditionalParam(String args) { //to oldgameID's and another additional params
+        String[] splitted = args.split("\\s+");
+        return splitted[8];
     }
 }
