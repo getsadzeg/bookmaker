@@ -7,6 +7,8 @@ import ge.mziuri.dao.GameDAOImpl;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 
@@ -19,9 +21,9 @@ public class ServerThread extends Thread {
 
     private Socket socket;
 
-    private DataInputStream in;
+    private ObjectInputStream in;
 
-    private DataOutputStream out;
+    private ObjectOutputStream out;
 
     public ServerThread(Socket socket) {
         this.socket = socket;
@@ -29,8 +31,8 @@ public class ServerThread extends Thread {
         betdao = new BetDAOImpl();
         bookdao = new BookDAOImpl();
         try {
-            in = new DataInputStream(socket.getInputStream());
-            out = new DataOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+            out = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
@@ -49,21 +51,18 @@ public class ServerThread extends Thread {
     public void run() {
         while (socket.isConnected()) {
             try {
-                String text = in.readUTF();
-                if (text.equals("exit")) {
-                    closeConnection();
-                    break;
-                }
-                sendCommand(text);
-            } catch(IOException ex) {
+                Object[] obj = (Object[]) in.readObject();
+                sendCommand(obj);
+                
+            } catch(IOException | ClassNotFoundException ex) {
                 System.out.println(ex.getMessage());
             }
         }
     }
     
-    public void sendCommand(String cmd) {
+    public void sendCommand(Object obj) {
         try {
-            out.writeUTF(cmd);
+            out.writeObject(obj);
         }
         catch(IOException ex) {
             System.out.println(ex.getMessage());
@@ -72,7 +71,6 @@ public class ServerThread extends Thread {
 
     private void closeConnection() {
         try {
-            
             in.close();
             out.close();
             socket.close();
