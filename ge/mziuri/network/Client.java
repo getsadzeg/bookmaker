@@ -129,7 +129,7 @@ public class Client {
         
     }
     
-    public static Object processGame(String args) {
+    public static Game processGame(String args) {
                     String[] splitted = args.split("\\s+");
                     Integer id = Integer.parseInt(splitted[2]);
                     DateFormat formatter; 
@@ -154,7 +154,7 @@ public class Client {
         return Integer.parseInt(splitted[2]);
     }
     
-    public static String getAdditionalParam(String args) { //to oldgameID's and another additional params
+    public static String getAdditionalParam(String args) { //to oldgameID's and another additional params. passed to the end of input
         String[] splitted = args.split("\\s+");
         return splitted[8];
     }
