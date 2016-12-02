@@ -73,14 +73,16 @@ public class Client {
                 }
             };
             thread.start();
-            while (scanner.hasNextLine()) {
-                
-                System.out.println("1 - add game"
+            System.out.println("1 - add game"
                                     + System.lineSeparator() + "2 - delete game"
                                     + System.lineSeparator() + "3 - edit game"
                                     + System.lineSeparator() + "4 - about games"
                                     + System.lineSeparator() + "5 - get date"
                                     + System.lineSeparator() + "6 - get coefficient");
+            while (scanner.hasNextLine()) {
+                
+                
+                
                 String text = scanner.nextLine();
                 if(text.contains("game 1")) {
                     out.writeObject("game 1");

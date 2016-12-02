@@ -60,7 +60,7 @@ public class ServerThread extends Thread {
         }
     }
     
-    public void sendCommand(Object obj) {
+    public void sendCommand(Object[] obj) {
         try {
             out.writeObject(obj);
         }
