@@ -3,9 +3,10 @@ package ge.mziuri.model;
 
 import ge.mziuri.enums.RESULT;
 import static ge.mziuri.enums.RESULT.NO_DATA;
+import java.io.Serializable;
 
 
-public class Bet {
+public class Bet implements Serializable {
     private int id;
     
     private int book_id;

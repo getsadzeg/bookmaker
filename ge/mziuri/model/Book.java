@@ -1,10 +1,11 @@
 
 package ge.mziuri.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Book {
+public class Book implements Serializable {
     
     private int id;
     

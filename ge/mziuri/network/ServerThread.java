@@ -7,7 +7,6 @@ import ge.mziuri.dao.GameDAOImpl;
 import ge.mziuri.exception.IncorrectGameException;
 import ge.mziuri.exception.NoSuchTeamException;
 import ge.mziuri.model.Game;
-import static ge.mziuri.network.Client.obj;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -56,9 +55,8 @@ public class ServerThread extends Thread {
         while (socket.isConnected()) {
             try {
                 Object[] obj = (Object[]) in.readObject();
+                Object[] ans = new Object[3];
                         while (true) {
-                            GameDAOImpl gamedao = new GameDAOImpl();
-                            Object[] ans = new Object[3];
                             switch((String)obj[0]) {
                                 case "game 1": 
                                     gamedao.addGame((Game)obj[1]);
@@ -94,12 +92,12 @@ public class ServerThread extends Thread {
                                         ans[0] = "game 6";
                                         ans[1] = "entered 'get coefficient' ";
                                         ans[2] = gamedao.getCoefficient((String)obj[1], (Game)obj[2]);
+                                        sendCommand(ans);
                                     }
                                     catch(IncorrectGameException | NoSuchTeamException ex) {
                                         System.out.println("incorrect game or no such team");
                                     }
                                 break;
-                                    
                                     
                             }
                         }

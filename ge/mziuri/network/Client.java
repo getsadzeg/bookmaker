@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -16,7 +17,7 @@ public class Client {
     static ObjectInputStream in = null;
     static ObjectOutputStream out = null;
     static Socket socket = null;
-    static Object[] obj = null;
+    static Object[] objects = new Object[3];
     static Object[] answers = new Object[3];
 
     public static void main(String[] args) throws IOException {
@@ -33,8 +34,11 @@ public class Client {
 
             @Override
             public void run() {
-                while (true) {
-                    try {
+                try {
+                    System.out.println("before initializing answers");
+                    
+                    System.out.println("after initializing answers");
+                    while(true) {
                         answers = (Object[]) in.readObject();
                         switch ((String) answers[0]) {
                             case "game 1":
@@ -52,11 +56,14 @@ public class Client {
                                 break;
 
                         }
-                        //  System.out.println(answers[0]);
-                        //  if(answers[1] != null) System.out.println(answers[1]);
-                    } catch (IOException | ClassNotFoundException ex) {
-                        System.out.println(ex.getMessage());
                     }
+                }
+                catch(IOException | ClassNotFoundException ex) {
+                    System.out.println("in catch block of run()");
+                    
+                    System.out.println("answers : " + Arrays.toString(answers));
+                   // System.out.println(in.available());
+                    ex.printStackTrace();
                 }
             }
         };
@@ -75,34 +82,50 @@ public class Client {
             try {
                 String text = scanner.nextLine();
                 if (text.contains("game 1")) {
-                    out.writeObject("game 1");
-                    out.writeObject(processGame(text));
+                    objects[0] = "game 1";
+                    objects[1] = processGame(text);
+                    System.out.println("before write object: " + Arrays.toString(objects));
+                    out.writeObject(objects);
+                    System.out.println("yep objects written " + Arrays.toString(objects));
                 } else if (text.contains("game 2")) {
-                    out.writeObject("game 2");
-                    out.writeObject(getID(text));
-                    out.writeObject(processGame(text));
+                    objects[0] = "game 2";
+                    objects[1] = getID(text);
+                    objects[2] = processGame(text);
+                    out.writeObject(objects);
                 } else if (text.contains("game 3")) {
-                    out.writeObject("game 3");
-                    out.writeObject(getAdditionalParam(text)); // oldGameID
-                    out.writeObject(processGame(text)); //game obj
+                    objects[0] = "game 3";
+                    objects[1] = getAdditionalParam(text); //oldGameID
+                    objects[2] = processGame(text); //game obj
+                    out.writeObject(objects);
                 } else if (text.contains("game 4")) {
-                    out.writeObject("game 4");
+                    objects[0] = "game 4";
+                    out.writeObject(objects);
                 } else if (text.contains("game 5")) {
-                    out.writeObject("game 5");
-                    out.writeObject(getID(text));
+                    objects[0] = "game 5";
+                    objects[1] = getID(text);
+                    out.writeObject(objects);
                 } else if (text.contains("game 6")) {
-                    out.writeObject("game 6");
-                    out.writeObject(getAdditionalParam(text)); //team
-                    out.writeObject(processGame(text)); //game obj
+                    objects[0] = "game 6";
+                    objects[1] = getAdditionalParam(text); //team
+                    objects[2] = processGame(text); //game obj
+                    out.writeObject(objects);
                 } else if (text.equals("exit")) {
-                    break;
+                    return;
                 }
             } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            } finally {
-                in.close();
-                out.close();
-                socket.close();
+                ex.printStackTrace();
+            }   finally {
+                System.out.println("got to finally block");
+                /*try {
+                    out.close();
+                    in.close();
+                    socket.close();
+                }
+                catch(IOException ex) {
+                    System.out.println("came into finally's catch");
+                    ex.printStackTrace();
+                } */
+                
             }
         }
     }
@@ -132,12 +155,12 @@ public class Client {
     }
 
     public static int getID(String args) {
-        String[] splitted = args.split("\\s+");
+        String[] splitted = args.split(" ");
         return Integer.parseInt(splitted[2]);
     }
 
     public static String getAdditionalParam(String args) { //to oldgameID's and another additional params. passed to the end of input
-        String[] splitted = args.split("\\s+");
+        String[] splitted = args.split(" ");
         return splitted[8];
     }
 }
